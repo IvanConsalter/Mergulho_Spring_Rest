@@ -21,5 +21,11 @@ public class ClienteController {
 
 		return clienteRepository.findAll();
 	}
+	
+	@GetMapping(path = "/clientes/nome")
+	public List<Cliente> listarPorNome() {
+		
+		return clienteRepository.findByNomeContaining("J");
+	}
 
 }
