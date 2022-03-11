@@ -2,7 +2,9 @@ package com.ivanconsalter.algalog.api.controller;
 
 import java.util.List;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ivanconsalter.algalog.domain.model.Cliente;
@@ -26,6 +28,24 @@ public class ClienteController {
 	public List<Cliente> listarPorNome() {
 		
 		return clienteRepository.findByNomeContaining("J");
+	}
+	
+	@GetMapping(path = "/clientes/{id}")
+	public ResponseEntity<Cliente> obterPorId(@PathVariable Long id) {
+		
+		return clienteRepository.findById(id)
+//				.map(cliente -> ResponseEntity.ok(cliente))
+				.map(ResponseEntity::ok)
+				.orElse(ResponseEntity.notFound().build());
+				
+				
+//		Optional<Cliente> cliente = clienteRepository.findById(id);
+//		
+//		if(cliente.isPresent()) {
+//			return ResponseEntity.ok(cliente.get());
+//		}
+//		
+//		return ResponseEntity.notFound().build();
 	}
 
 }
