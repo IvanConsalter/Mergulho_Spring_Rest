@@ -3,6 +3,7 @@ package com.ivanconsalter.algalog.domain.service;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.ivanconsalter.algalog.domain.exception.NegocioException;
 import com.ivanconsalter.algalog.domain.model.Cliente;
 import com.ivanconsalter.algalog.domain.repository.ClienteRepository;
 
@@ -16,6 +17,14 @@ public class CatalagoClienteService {
 	
 	@Transactional
 	public Cliente salvar(Cliente cliente) {
+		
+		boolean emailExistente = clienteRepository.findByEmail(cliente.getEmail())
+				.stream()
+				.anyMatch(clienteExistente -> !clienteExistente.equals(cliente));
+		
+		if(emailExistente) {
+			throw new NegocioException("Já existe um cliente cadastrado com esse email!");
+		}
 		return clienteRepository.save(cliente);
 	}
 	
