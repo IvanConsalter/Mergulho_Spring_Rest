@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ivanconsalter.algalog.domain.model.Cliente;
@@ -14,23 +15,24 @@ import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
 @RestController
+@RequestMapping(path = "/clientes")
 public class ClienteController {
 
 	private ClienteRepository clienteRepository;
 	
-	@GetMapping(path = "/clientes")
+	@GetMapping
 	public List<Cliente> listarTodos() {
 
 		return clienteRepository.findAll();
 	}
 	
-	@GetMapping(path = "/clientes/nome")
+	@GetMapping(path = "/nome")
 	public List<Cliente> listarPorNome() {
 		
 		return clienteRepository.findByNomeContaining("J");
 	}
 	
-	@GetMapping(path = "/clientes/{id}")
+	@GetMapping(path = "/{id}")
 	public ResponseEntity<Cliente> obterPorId(@PathVariable Long id) {
 		
 		return clienteRepository.findById(id)
