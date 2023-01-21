@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ivanconsalter.algalog.api.dto.DestinatarioDTO;
+import com.ivanconsalter.algalog.api.dto.EntregaDTO;
 import com.ivanconsalter.algalog.domain.model.Entrega;
 import com.ivanconsalter.algalog.domain.repository.EntregaRepository;
 import com.ivanconsalter.algalog.domain.service.SolicitacaoEntregaService;
@@ -41,9 +43,25 @@ public class EntregaController {
 	}
 	
 	@GetMapping(path = "/{id}")
-	public ResponseEntity<Entrega> obterPorId(@PathVariable Long id) {
+	public ResponseEntity<EntregaDTO> obterPorId(@PathVariable Long id) {
 		return entregaRepository.findById(id)
-				.map(ResponseEntity::ok)
+				.map( entrega -> {
+					EntregaDTO entregaDTO = new EntregaDTO();
+					entregaDTO.setId(entrega.getId());
+					entregaDTO.setNomeCliente(entrega.getCliente().getNome());
+					entregaDTO.setDestinatario(new DestinatarioDTO());
+					entregaDTO.getDestinatario().setNome(entrega.getDestinatario().getNome());
+					entregaDTO.getDestinatario().setLogradouro(entrega.getDestinatario().getLogradouro());
+					entregaDTO.getDestinatario().setNumero(entrega.getDestinatario().getNumero());
+					entregaDTO.getDestinatario().setComplemento(entrega.getDestinatario().getComplemento());
+					entregaDTO.getDestinatario().setBairro(entrega.getDestinatario().getBairro());
+					entregaDTO.setTaxa(entrega.getTaxa());
+					entregaDTO.setStatus(entrega.getStatus());
+					entregaDTO.setDataPedido(entrega.getDataPedido());
+					entregaDTO.setDataFinalizacao(entrega.getDataFinalizacao());
+					
+					return ResponseEntity.ok().body(entregaDTO);
+				})
 				.orElse(ResponseEntity.notFound().build());
 	}
 
