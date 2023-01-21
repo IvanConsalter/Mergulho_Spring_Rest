@@ -1,9 +1,11 @@
 package com.ivanconsalter.algalog.api.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.validation.Valid;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.ivanconsalter.algalog.api.dto.DestinatarioDTO;
 import com.ivanconsalter.algalog.api.dto.EntregaDTO;
 import com.ivanconsalter.algalog.domain.model.Entrega;
 import com.ivanconsalter.algalog.domain.repository.EntregaRepository;
@@ -29,6 +30,7 @@ public class EntregaController {
 	
 	private EntregaRepository entregaRepository;
 	private SolicitacaoEntregaService solicitacaoEntregaService;
+	private ModelMapper modelMapper;
 	
 	@PostMapping
 	@ResponseStatus(code = HttpStatus.CREATED)
@@ -38,27 +40,21 @@ public class EntregaController {
 	}
 	
 	@GetMapping
-	public List<Entrega> listar() {
-		return entregaRepository.findAll();
+	public List<EntregaDTO> listar() {
+		List<Entrega> listEntrega = entregaRepository.findAll(); 
+		List<EntregaDTO> listEntregaDTO = new ArrayList<EntregaDTO>();
+		
+		listEntrega.forEach(entrega -> {
+			listEntregaDTO.add(modelMapper.map(entrega, EntregaDTO.class));
+		});
+		return listEntregaDTO;
 	}
 	
 	@GetMapping(path = "/{id}")
 	public ResponseEntity<EntregaDTO> obterPorId(@PathVariable Long id) {
 		return entregaRepository.findById(id)
 				.map( entrega -> {
-					EntregaDTO entregaDTO = new EntregaDTO();
-					entregaDTO.setId(entrega.getId());
-					entregaDTO.setNomeCliente(entrega.getCliente().getNome());
-					entregaDTO.setDestinatario(new DestinatarioDTO());
-					entregaDTO.getDestinatario().setNome(entrega.getDestinatario().getNome());
-					entregaDTO.getDestinatario().setLogradouro(entrega.getDestinatario().getLogradouro());
-					entregaDTO.getDestinatario().setNumero(entrega.getDestinatario().getNumero());
-					entregaDTO.getDestinatario().setComplemento(entrega.getDestinatario().getComplemento());
-					entregaDTO.getDestinatario().setBairro(entrega.getDestinatario().getBairro());
-					entregaDTO.setTaxa(entrega.getTaxa());
-					entregaDTO.setStatus(entrega.getStatus());
-					entregaDTO.setDataPedido(entrega.getDataPedido());
-					entregaDTO.setDataFinalizacao(entrega.getDataFinalizacao());
+					EntregaDTO entregaDTO = modelMapper.map(entrega, EntregaDTO.class);
 					
 					return ResponseEntity.ok().body(entregaDTO);
 				})
