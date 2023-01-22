@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ivanconsalter.algalog.api.dto.EntregaDTO;
 import com.ivanconsalter.algalog.api.mapper.EntregaMapper;
 import com.ivanconsalter.algalog.domain.model.Entrega;
+import com.ivanconsalter.algalog.domain.model.input.EntregaInput;
 import com.ivanconsalter.algalog.domain.repository.EntregaRepository;
 import com.ivanconsalter.algalog.domain.service.SolicitacaoEntregaService;
 
@@ -33,8 +34,8 @@ public class EntregaController {
 	
 	@PostMapping
 	@ResponseStatus(code = HttpStatus.CREATED)
-	public EntregaDTO solicitar(@Valid @RequestBody Entrega entrega) {
-		Entrega entregaSolicitada = solicitacaoEntregaService.solicitar(entrega);
+	public EntregaDTO solicitar(@Valid @RequestBody EntregaInput entregaInput) {
+		Entrega entregaSolicitada = solicitacaoEntregaService.solicitar(entregaMapper.toEntity(entregaInput));
 		return entregaMapper.toDTO(entregaSolicitada);
 	}
 	
