@@ -4,10 +4,9 @@ import javax.transaction.Transactional;
 
 import org.springframework.stereotype.Service;
 
-import com.ivanconsalter.algalog.domain.exception.NegocioException;
 import com.ivanconsalter.algalog.domain.model.Entrega;
 import com.ivanconsalter.algalog.domain.model.Ocorrencia;
-import com.ivanconsalter.algalog.domain.repository.EntregaRepository;
+import com.ivanconsalter.algalog.domain.service.util.BuscarEntregaServiceUtil;
 
 import lombok.AllArgsConstructor;
 
@@ -15,12 +14,11 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class OcorrenciaService {
 
-	private EntregaRepository entregaRepository;
+	private BuscarEntregaServiceUtil buscarEntregaServiceUtil;
 	
 	@Transactional
 	public Ocorrencia registrar(Long entregaId, String descricao) {
-		Entrega entrega = entregaRepository.findById(entregaId)
-				.orElseThrow( () -> new NegocioException("Entrega não encontrada."));
+		Entrega entrega = buscarEntregaServiceUtil.buscar(entregaId);
 		
 		return entrega.adicionarOcorrencia(descricao);
 	}
