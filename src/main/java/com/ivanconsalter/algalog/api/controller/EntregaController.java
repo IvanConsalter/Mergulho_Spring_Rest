@@ -14,10 +14,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.ivanconsalter.algalog.api.dto.EntregaDTO;
 import com.ivanconsalter.algalog.api.mapper.EntregaMapper;
+import com.ivanconsalter.algalog.api.model.dto.EntregaDTO;
+import com.ivanconsalter.algalog.api.model.input.EntregaInput;
 import com.ivanconsalter.algalog.domain.model.Entrega;
-import com.ivanconsalter.algalog.domain.model.input.EntregaInput;
 import com.ivanconsalter.algalog.domain.repository.EntregaRepository;
 import com.ivanconsalter.algalog.domain.service.SolicitacaoEntregaService;
 

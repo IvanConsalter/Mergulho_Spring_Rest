@@ -1,4 +1,4 @@
-package com.ivanconsalter.algalog.domain.model.input;
+package com.ivanconsalter.algalog.api.model.input;
 
 import javax.validation.constraints.NotNull;
 

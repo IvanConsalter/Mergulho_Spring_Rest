@@ -1,4 +1,4 @@
-package com.ivanconsalter.algalog.api.dto;
+package com.ivanconsalter.algalog.api.model.dto;
 
 import lombok.Getter;
 import lombok.Setter;
