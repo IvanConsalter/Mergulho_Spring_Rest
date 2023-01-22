@@ -48,4 +48,15 @@ public class Entrega {
 	@OneToMany(mappedBy = "entrega")
 	private List<Ocorrencia> listOcorrencia = new ArrayList<Ocorrencia>();
 	
+	public Ocorrencia adicionarOcorrencia(String descricao) {
+		Ocorrencia ocorrencia = new Ocorrencia();
+		ocorrencia.setDescricao(descricao);
+		ocorrencia.setEntrega(this);
+		ocorrencia.setDataRegistro(OffsetDateTime.now());
+		
+		this.getListOcorrencia().add(ocorrencia);
+		
+		return ocorrencia;
+		
+	}
 }
