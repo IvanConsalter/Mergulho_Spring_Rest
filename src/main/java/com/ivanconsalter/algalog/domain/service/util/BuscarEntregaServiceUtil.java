@@ -2,7 +2,7 @@ package com.ivanconsalter.algalog.domain.service.util;
 
 import org.springframework.stereotype.Service;
 
-import com.ivanconsalter.algalog.domain.exception.NegocioException;
+import com.ivanconsalter.algalog.domain.exception.EntidadeNaoEncontradoException;
 import com.ivanconsalter.algalog.domain.model.Entrega;
 import com.ivanconsalter.algalog.domain.repository.EntregaRepository;
 
@@ -16,6 +16,6 @@ public class BuscarEntregaServiceUtil {
 	
 	public Entrega buscar(Long id) {
 		return entregaRepository.findById(id)
-		.orElseThrow( () -> new NegocioException("Entrega não encontrada."));
+		.orElseThrow( () -> new EntidadeNaoEncontradoException("Entrega não encontrada."));
 	}
 }
